@@ -11,15 +11,18 @@ class DashBoardController extends Controller
 {
     public function index()
     {
+
         $numberOfTeams = TeamMember::where('user_id' , auth()->user()->id)->with('teams')->count();
 
         $teams = TeamMember::where('user_id' , auth()->user()->id)->pluck('team_id')->toArray();
 
         $numberoflinks =Link::whereIn('team_id',$teams)->count();
 
-        $scans = Scan::where('team_id' , $teams)->with('team' ,'link')->limit(8)->get();
-
-       return view('customer.dashboard',compact('numberOfTeams','numberoflinks','scans'));
+        $scans = Scan::where('team_id' , $teams)->with('team' ,'link')->limit(5)->latest()->get();
+        
+        $numberOfscans =Scan::whereIn('team_id',$teams)->with('team.members')->orderBy('id','desc')->count();
+       
+        return view('customer.dashboard',compact('numberOfTeams','numberoflinks','scans','numberOfscans'));
     }
 
 }

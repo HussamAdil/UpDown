@@ -1,4 +1,4 @@
-<nav class="pcoded-navbar">
+ <nav class="pcoded-navbar">
     <div class="navbar-wrapper">
         <div class="navbar-brand header-logo">
             <a href="index.html" class="b-brand">
@@ -20,6 +20,8 @@
                 <li  class="nav-item"><a href="{{route('customer.team.index')}}"  class="nav-link  "><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Teams</span></a></li>
 
                 <li  class="nav-item"><a href="{{route('customer.link.index')}}"  class="nav-link "><span class="pcoded-micon"><i class="feather icon-link"></i></span><span class="pcoded-mtext">Link</span></a></li>
+
+                <li  class="nav-item"><a href="{{route('customer.scan.index')}}"  class="nav-link "><span class="pcoded-micon"><i class="fa fa-history "></i></span><span class="pcoded-mtext">Scan Logs</span></a></li>
 
                 <li  class="nav-item"><a href="{{route('customer.invitation.index')}}" class="nav-link "><span class="pcoded-micon"><i class="fa fa-paper-plane" aria-hidden="true"></i></span><span class="pcoded-mtext"> My Invitations</span></a></li>
 

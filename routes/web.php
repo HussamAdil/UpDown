@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Scan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -9,6 +10,7 @@ use App\Http\Controllers\Auth\SocialLoginController;
 use App\Http\Controllers\Customer\InvitationController;
 use App\Http\Controllers\Customer\MemberShipController;
 use App\Http\Controllers\Customer\DashBoardController as CustomerDashBoard;
+use App\Http\Controllers\Customer\ScanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,24 +23,17 @@ use App\Http\Controllers\Customer\DashBoardController as CustomerDashBoard;
 |
 */
 
-
 Route::get('/' , [HomeController::class,'index'])->name('home');
 
 Route::group(['middleware' =>['auth'],'as' => 'customer.'],function()
   {
     Route::get('dashboard', [CustomerDashBoard::class,'index'])->name('dashboard.index');
 
-   # Route::get('invitation', [TeamController::class,'invitation'])->name('team.invitation');
-
     Route::resource('invitation', InvitationController::class);
 
-    #Route::post('invitation/{id}', [TeamController::class,'UpdateInvitationStatus'])->name('team.invitation.update.status');
-
-   # Route::get('team/member/invite', [TeamController::class,'invite'])->name('team.member.invite');
-
-   # Route::post('team/member/invite', [TeamController::class,'sendInvitation'])->name('team.member.invite.send');
-
     Route::resource('team', TeamController::class);
+
+    Route::resource('scan', ScanController::class);
 
     Route::resource('link', LinkController::class);
 
@@ -56,3 +51,5 @@ Route::get('auth/{driver}', [SocialLoginController::class,'redirectToProvider'])
 Route::get('auth/{driver}/callback', [SocialLoginController::class,'handleProviderCallback'])->name('login-callback');
 
 Route::post('logout', [SocialLoginController::class,'logout'])->name('logout');
+
+

@@ -24,12 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('scan-enterprise-membership:links')->everyMinute();
-
-        // $schedule->command('scan-business-membership:linsk')->everyFiveMinutes();
-
-         $schedule->command('scan:starter-membership')->everyMinute();
-       
+         $schedule->command('scan:starter-membership')->everyMinute();       
     }
 
     /**

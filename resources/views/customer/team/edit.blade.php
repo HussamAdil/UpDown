@@ -8,7 +8,12 @@
         <div class="form-group">
             <label for="exampleInputName">Name</label>
         <input value="{{$team->name}}" name="name" type="text" class="form-control" id="exampleInputName" aria-describedby="nameHelp" placeholder="Enter your team name">
-         </div>
+        @if ($errors->has('name'))
+        <span class="invalid-feedback" style="display: block;" role="alert">
+            <strong>{{ $errors->first('name') }}</strong>
+        </span>
+        @endif    
+    </div>
          <div class="form-group">
             <label for="exampleInputLogo">Logo</label>
 

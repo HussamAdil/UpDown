@@ -3,12 +3,12 @@
 namespace Tests\Feature\Http\Controllers\Customer;
 
 use Tests\TestCase;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helper;
 
 class DashboardControllerTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase,Helper;
 
     public function test_user_must_login_to_access_dashboard()
     {
@@ -19,9 +19,7 @@ class DashboardControllerTest extends TestCase
 
     public function test_loggedin_user_can_access_databoard()
     {
-        $creatUser = User::factory()->createOne();
-
-        $user = User::where('id',$creatUser->id)->first();
+        $user =  $this->createUser();
 
         $response = $this->actingAs($user)->get(route('customer.dashboard.index'));
 

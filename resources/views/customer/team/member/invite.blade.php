@@ -1,7 +1,7 @@
 @extends('customer.layouts.app')
 @section('content')
 <div class="col-md-6">
-    <h3 class="text-muted mb-3"><i class="feather icon-user"></i> invite Member</h3>
+    <h3 class="text-muted mb-3"><i class="feather icon-user"></i> invite Member </h3>
 <form enctype="multipart/form-data" method="POST" action="{{route('customer.invitation.store')}}">
         @csrf
         <div class="form-group">
@@ -18,7 +18,13 @@
         <select name="team_id" id="TeamType" class="form-control">
             <option value="">Select Team</option>
             @foreach ($teams as $team)
-           <option value="{{$team->id}}">{{$team->name}} </option>
+           <option
+           @if(request()->team_id ==$team->id)
+           {{"selected"}}
+           @endif
+           
+           value="{{$team->id}}
+           ">{{$team->name}} </option>
 
             @endforeach
         </select>

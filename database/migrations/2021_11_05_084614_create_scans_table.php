@@ -20,6 +20,7 @@ class CreateScansTable extends Migration
             $table->foreignIdFor(Link::class);
             $table->foreignIdFor(Team::class);
             $table->string('http_status_code');
+            $table->string('response_time');
             $table->timestamp('scaned_at');
             $table->timestamps();
         });

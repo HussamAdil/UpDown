@@ -24,7 +24,7 @@ class Controller extends BaseController
                     ->where('read_at'.null)->get();
                     
                     View::share('notificationInvitations', $notificationInvitations);
-                }
+                   }
             if(session('success_message'))
             {
                 Alert::toast(session('success_message'), 'success');    

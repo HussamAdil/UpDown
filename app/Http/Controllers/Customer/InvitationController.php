@@ -22,12 +22,16 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        Invitation::where('email' , auth()->user()->email)->update(['read_at'=>now()]);
+        $this->markInvitationsAsRead();
 
-        $invitations = Invitation::where('email' , auth()->user()->email)->
-        where('accepted_at',null)->where('rejected_at'.null)->get();
+        $invitations = Invitation::pendding()->get();
 
         return view('customer.team.invitation',compact('invitations'));
+    }
+
+    private function markInvitationsAsRead()
+    {
+        Invitation::where('email' , auth()->user()->email)->update(['read_at'=>now()]);
     }
 
     /**

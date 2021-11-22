@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 use App\Models\Link;
 use App\Models\Scan;
 use App\Models\User;
+use App\Notifications\LinkIsDownNotification;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 
@@ -44,15 +45,33 @@ class ScanStarterMemberShipLinkCommand extends Command
      */
     public function handle()
     {
-        $businessMemberShipUsersIds = User::where('membership_id' , User::Starter_MemberShip)->pluck('id')->toArray();
+        $starterMemberShipUsersIds = User::where('membership_id' , User::Starter_MemberShip)->pluck('id')->toArray();
 
-        $links = Link::whereIn('added_by' , $businessMemberShipUsersIds)->get();
+        $links = Link::whereIn('added_by' , $starterMemberShipUsersIds)->get();
 
         foreach($links as $link)
         {
-            $response  = Http::get($link->url);
+        $response  = Http::get($link->url);
 
-            Scan::create([ 'link_id' => $link->id,'team_id' => $link->team_id, 'http_status_code' => $response->status(),'scaned_at' => now()]);
+           $scan = Scan::create(['link_id' => $link->id,'team_id' => 
+                           $link->team_id, 'http_status_code' => $response->status(),
+                            'response_time' => '11111',
+                            'scaned_at' => now()]);
+
+             $scanedLink = Scan::whereId($scan->id)->with('team.members.user')->first(); 
+
+             if($scanedLink->isDown)
+             {
+                $this->notifyTeamMembers($scanedLink);   
+             }
+        }
+    }
+
+    private function notifyTeamMembers(Link $scanedLink)
+    {
+        foreach($scanedLink->team->members as $member)
+        {
+          return $member->user->notify(new LinkIsDownNotification($scanedLink));
         }
     }
 }

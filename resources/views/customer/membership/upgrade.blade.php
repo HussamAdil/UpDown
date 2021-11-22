@@ -16,7 +16,7 @@
         <li>number of link : {{$membership->number_of_link}}</li><hr>
         <li>number of team : {{$membership->number_of_team}}</li><hr>
         @if(auth()->user()->membership_id ==$membership->id )
-        <a style="background:#f4f6fa"  href="{{route('customer.membership.index')}}" class="btn btn-sm p-1 pr-3 pl-3  text-dark btn-rounded"> <i class="fa fa-check-circle text-dark"></i>  Active </a>
+        <a style="background:#f4f6fa"  href="{{route('customer.membership.index')}}" class="btn btn-sm p-1 pr-3 pl-3  text-dark btn-rounded"> <i class="fa fa-check-circle text-c-green"></i>  Active </a>
         @else 
              @if($membership->id == 2 )
             <a href="#" class="btn btn-sm p-1 pr-3 pl-3 bg-white btn-rounded"> Soon </a>

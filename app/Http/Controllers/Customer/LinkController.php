@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\LinkCreatedNotification;
 use App\Http\Requests\Customer\LinkStoreRequest;
 use App\Http\Requests\Customer\LinkUpdateRequest;
+use App\Models\Scan;
 
 class LinkController extends Controller
 {
@@ -126,7 +127,9 @@ class LinkController extends Controller
      
         $teams = TeamMember::select('team_id')->where('user_id' , auth()->user()->id)->get();
 
-        $links =Link::whereId($link->id)->whereIn('team_id',$teams)->delete();
+        Scan::where('link_id' , $link->id)->delete();
+
+        Link::whereId($link->id)->whereIn('team_id',$teams)->delete();
 
         return redirect(route('customer.link.index'))->withSuccessMessage('link deleted successfully');;
 

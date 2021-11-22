@@ -18,6 +18,7 @@ class TeamController extends Controller
      */
     public function index()
     {
+        
         $teams = TeamMember::where('user_id' , auth()->user()->id)->with('team.creator')
                             ->orderBy('id','desc')->get();
         
@@ -54,7 +55,7 @@ class TeamController extends Controller
         
        TeamMember::create(['team_id' => $team->id , 'user_id' => auth()->user()->id]);
 
-        return redirect(route('customer.team.index'))->withSuccessMessage('data_saved_successfully');
+        return redirect(route('customer.team.index'))->withSuccessMessage('data saved successfully');
     }
 
     /**
@@ -99,7 +100,7 @@ class TeamController extends Controller
      */
     public function update(TeamUpdateRequest $request,Team $team )
     {
-        $this->authorize('update' , $team->id);
+        $this->authorize('update' , $team);
 
         if($request->hasFile('updateLogo'))
         {
@@ -111,7 +112,7 @@ class TeamController extends Controller
             Team::whereId($team->id)->update(['name'=>$request->name]);
         }
 
-        return redirect(route('customer.team.index'));
+        return redirect(route('customer.team.index'))->withSuccessMessage('Updated successfully');;
 
     }
 

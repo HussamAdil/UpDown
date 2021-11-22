@@ -24,4 +24,10 @@ class Invitation extends Model
     {
         return $this->belongsTo(User::class,'send_by');
     }
+
+    public function  scopePendding()
+    {
+        return Invitation::where('email' , auth()->user()->email)->
+        where('accepted_at',null)->where('rejected_at'.null);
+    }
 }

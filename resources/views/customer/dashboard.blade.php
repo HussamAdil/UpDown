@@ -10,7 +10,7 @@
                 </div>
                 <div class="col">
                     <h3 class="f-w-300">{{$numberoflinks}}</h3>
-                    <span class="d-block text-uppercase">Site</span>
+                    <span class="d-block text-uppercase">Links</span>
                 </div>
             </div>
         </div>
@@ -21,7 +21,7 @@
         <div class="card-block">
             <div class="row d-flex align-items-center">
                 <div class="col-auto">
-                    <i class="feather icon-users f-30 text-c-green"></i>
+                    <i class="fas fa-users f-30 text-c-green"></i>
                 </div>
                 <div class="col">
                 <h3 class="f-w-300">{{$numberOfTeams}}</h3>
@@ -36,11 +36,11 @@
         <div class="card-block">
             <div class="row d-flex align-items-center">
                 <div class="col-auto">
-                    <i class="feather icon-users f-30 text-c-blue"></i>
+                    <i class="fas fa-users text-danger f-30 text-c-blue"></i>
                 </div>
                 <div class="col">
-                    <h3 class="f-w-300">4</h3>
-                    <span class="d-block text-uppercase">Team</span>
+                <h3 class="f-w-300">{{$numberOfscans}}</h3>
+                    <span class="d-block text-uppercase"> Scans</span>
                 </div>
             </div>
         </div>

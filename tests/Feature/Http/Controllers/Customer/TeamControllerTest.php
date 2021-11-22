@@ -2,72 +2,29 @@
 
 namespace Tests\Feature\Http\Controllers\Customer;
 
-use App\Models\Team;
-use App\Models\TeamMember;
+
 use Tests\TestCase;
-use App\Models\User;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\Helper;
 
 class TeamControllerTest extends TestCase
 {
-   use RefreshDatabase;
-
-   public $user;
+   use RefreshDatabase , Helper;
 
    public function test_user_must_login_to_access_team()
    {
        $response = $this->get(route('customer.team.index'));
 
+       $response = $this->get(route('customer.team.index'));
+
        $response->assertStatus(302);
-   }
-   
-   private function  createUser()
-   {
-       User::factory()->create();
 
-       $this->user = User::first();
-
-       return $this->user;
-   }
-
-   private function genRandomUser()
-   {
-    
-     $user =  User::factory()->createOne();
-
-    $randomUser =  User::where('id' , $user->id)->first();
-
-    return $randomUser;
-
-   }
-
-   private function  createTeamByUser(User $user)
-   {
-       $team =  Team::create([
-            'name' => 'personal_team',
-            'creator_id' => $user->id
-        ]);
-
-        $team =  TeamMember::create([
-            'team_id' => $team->id,
-            'user_id' => $user->id
-        ]);
-       
-       $team = Team::where('id' , $team->id)->first();
-
-       return $team;
-   }
-
-   public function test_loggedin_user_can_access_team()
-   {
        $user =  $this->createUser();
+     
+       $UserResponse = $this->actingAs($user)->get(route('customer.team.index'));
 
-       $response = $this->actingAs($user)->get(route('customer.team.index'));
-
-       $this->assertDatabaseCount('teams' , 0);
-
-       $response->assertStatus(200);
+       $UserResponse->assertStatus(200);
    }
 
    public function test_user_can_create_team()
@@ -83,6 +40,7 @@ class TeamControllerTest extends TestCase
        $this->assertDatabaseCount('team_members' , 1);
 
    }
+
    public function test_user_submit_invalid_team()
    {
        $user =  $this->createUser();
@@ -96,7 +54,6 @@ class TeamControllerTest extends TestCase
        $response->assertStatus(302);
 
        $this->assertDatabaseCount('team_members' , 0);
-
    }
 
    public function test_user_can_show_team()
@@ -111,7 +68,7 @@ class TeamControllerTest extends TestCase
  
    }
 
-   public function test_user_cannot_show_team_when_not_join()
+   public function test_team_members_only_can_show_team_info()
    {
        $teamCreator =  $this->createUser();
 
@@ -121,14 +78,14 @@ class TeamControllerTest extends TestCase
 
         $teamCreatorResponse->assertStatus(200);
 
-       $randomUser =  $this->genRandomUser();
+       $randomUser =  $this->createUser();
 
        $response = $this->actingAs($randomUser)->get(route('customer.team.show' , $team->id));
    
         $response->assertStatus(403);
    }
 
-   public function test_user_cannot_edit_when_he_is_the_team_creator()
+   public function test_team_creator_can_edit_team()
    {
        $teamCreator =  $this->createUser();
 
@@ -138,22 +95,32 @@ class TeamControllerTest extends TestCase
 
         $teamCreatorResponse->assertStatus(200);
 
-       $randomUser =  $this->genRandomUser();
+       $randomUser =  $this->createUser();
 
        $response = $this->actingAs($randomUser)->get(route('customer.team.edit' , $team));
    
        $response->assertStatus(403);
    }
 
-   public function test_user_creator_can_edit_team()
+   public function test_team_creator_can_update_team()
    {
        $teamCreator =  $this->createUser();
 
         $team = $this->createTeamByUser($teamCreator);
       
-        $response = $this->actingAs($teamCreator)->get(route('customer.team.edit' , $team));
+        $teamCreatorResponse = $this->actingAs($teamCreator)->put(route('customer.team.update' , $team),
+    ['name' => 'new name']);
 
-        $response->assertStatus(200);
+        $teamCreatorResponse->assertStatus(302);
+
+        $teamCreatorResponse->assertSessionHas(['success_message']);
+
+       $randomUser =  $this->createUser();
+
+       $randomUserResponse = $this->actingAs($randomUser)->put(route('customer.team.update' , $team),
+       ['name' => 'new name']);  
+
+       $randomUserResponse->assertStatus(403);
    }
 
 }

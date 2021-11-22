@@ -29,7 +29,9 @@
         <h4 class="text-muted" ><i class="feather icon-users"></i> Team Members </h4>
     </div>
     <div class="col-auto">
-        <a href="{{route('customer.invitation.create')}}" class="btn btn-sm btn-dark p-2 "> <i class="feather icon-plus-circle"></i> Invite Member</a>
+        <a href="{{route('customer.invitation.create',['team_id'=> $team->id])}}" class="btn btn-sm btn-dark p-2 ">
+            
+            <i class="feather icon-plus-circle"></i> Invite Member</a>
     </div>
 </div>
 
@@ -61,7 +63,6 @@
                            </td>
                            <td> {{$member->created_at}} </td>
                            <td>
-                            <a title="remove from team" href="#"><i class="feather icon-trash text-danger"></i> </a>     
 
                            </td>
                        </tr>

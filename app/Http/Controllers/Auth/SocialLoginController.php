@@ -21,26 +21,7 @@ class SocialLoginController extends Controller
 
     public function redirectToProvider($driver)
     {  
-        // Start TESTING ONLY   
-        
-        $user = User::where('email','hussam0683@gmail.com')->first();
-        if(!$user){
-           $user =  User::create(['email'=>'hussam0683@gmail.com','name'=>'Hussam Adil','social_id' => Random::generate(),
-            'user_type_id' => User::Customer_User_Type,'password'=>' ','membership_id'=>User::Starter_MemberShip]);
-        
-            $team = Team::create(['name' => 'personal_team','creator_id' => $user->id ]);
-
-            TeamMember::create(['team_id' => $team->id , 'user_id' => $user->id]);
-
-        }
-
-        Auth::loginUsingId($user->id);
-
-        return redirect()->route('customer.dashboard.index');
-       
-      //  end TESTING ONLY
-
-       # return Socialite::driver($driver)->redirect();
+       return Socialite::driver($driver)->redirect();
     }
 
     public function handleProviderCallback($driver)
@@ -73,7 +54,7 @@ class SocialLoginController extends Controller
 
             Auth::loginUsingId($saveUser->id);
 
-            return redirect()->route('home');
+            return redirect()->route('customer.dashboard.index');
         } catch (\Throwable $th) {
             throw $th;
         }
