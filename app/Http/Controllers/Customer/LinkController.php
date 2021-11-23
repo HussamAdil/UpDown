@@ -125,13 +125,11 @@ class LinkController extends Controller
     {  
         $this->authorize('delete' , $link);
      
-        $teams = TeamMember::select('team_id')->where('user_id' , auth()->user()->id)->get();
-
         Scan::where('link_id' , $link->id)->delete();
 
-        Link::whereId($link->id)->whereIn('team_id',$teams)->delete();
+        Link::whereId($link->id)->delete();
 
-        return redirect(route('customer.link.index'))->withSuccessMessage('link deleted successfully');;
+        return redirect(route('customer.link.index'))->withSuccessMessage('link deleted successfully');
 
     }
 }
