@@ -9,7 +9,7 @@ class Scan extends Model
 {
     use HasFactory;
 
-    private $negtiveHttpStatuesCode = [404,500];
+    private $negtiveHttpStatuesCode = [404,500,502,503,522];
 
     protected $fillable = [
         'link_id',

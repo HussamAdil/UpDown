@@ -21,7 +21,7 @@ class Controller extends BaseController
             if(Auth::check())
                     {
                     $notificationInvitations =  Invitation::where('email' , auth()->user()->email)
-                    ->where('read_at'.null)->get();
+                    ->where('read_at', null)->get();
                     
                     View::share('notificationInvitations', $notificationInvitations);
                    }

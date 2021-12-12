@@ -58,12 +58,12 @@ class LinkController extends Controller
       
         $UsersIds = TeamMember::where('team_id' , $request->team_id)->pluck('user_id')->toArray();
     
-      # $teammates =   User::whereNot('id', auth()->user()->id)->whereIn('id' , $UsersIds)->get();
+         $teammates =   User::where('id','!=', auth()->user()->id)->whereIn('id' , $UsersIds)->get();
 
-    //    foreach($teammates as $teammate)
-    //    {
-    //       $teammate->notify(new LinkCreatedNotification($link));
-    //    }
+        foreach($teammates as $teammate)
+        {
+            $teammate->notify(new LinkCreatedNotification($link));
+        }
 
          return redirect(route('customer.link.index'))->withSuccessMessage('link created successfully');;
 
